@@ -5,17 +5,18 @@
     os_server_info:
      cloud: openstack
      server: 'frontend'
-    register: r_os_server_info
+    register: os_server_info
     
   - name: Curl website
     uri:
      url: "http://{{item.public_v4}}"
      return_content: yes
     with_items:
-      - "{{ r_os_server_info.openstack_servers }}"
-    register: r_webpage
+      - "{{ os_server_info.openstack_servers }}"
+    register: webpage
 
-  - debug: var=r_webpage.content
+  - debug:
+    var: webpage
 
   - name: Fail if 'Ansible has done its job' is not in the page content
     fail:
