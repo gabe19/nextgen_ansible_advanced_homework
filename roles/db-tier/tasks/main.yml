@@ -1,0 +1,21 @@
+---
+- name: Install PostgreSQL
+  yum:
+    name: postgresql-server
+    state: latest
+
+- name: Check if PostgreSQL is initialised
+  command: postgresql-check-db-dir  /var/lib/pgsql/data
+  register: check_db_init_output
+  changed_when: check_db_output == 1
+  ignore_errors: yes
+  
+- name: Initilise PostgreSQL if not initialised
+  shell: postgresql-setup initdb
+  when: check_db_init_output.rc != 0
+
+- name: Enable and start PostgreSQL
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
