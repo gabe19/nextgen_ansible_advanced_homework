@@ -5,7 +5,7 @@
       cloud: openstack
      register: result
 
-  - name: Delete instances
+   - name: Delete instances
      os_server:
       name: "{{ item.name }}"
       state: absent
